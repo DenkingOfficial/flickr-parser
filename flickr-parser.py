@@ -36,15 +36,19 @@ def parse_images(key, word, num, output):
             break
     print(f'{counter} Images downloaded to {output}')
 
+def confirm_overwriting(question: str) -> bool:
+    reply = None
+    while reply not in ("y", "n"):
+        reply = input(f"{question} (y/n): ").lower()
+    return (reply == "y")
+
 if __name__ == "__main__":
     args = create_arguments()
     if not os.path.isdir(args.output):
         os.mkdir(args.output)
     elif os.path.isdir(args.output) and len(os.listdir(args.output)) > 0:
-        user_input = input('Folder is not empty, files with the same names will be overwritted, are you sure to continue? (yes/no): ')
-        no_choices = ['no', 'n']
-        if user_input.lower() in no_choices:
-            print('Restart an application and set other output folder')
-            exit()
+        user_input = confirm_overwriting('Folder is not empty, files with the same names will be overwritted, are you sure to continue?')
+        if user_input == False:
+            exit('Restart an application and set other output folder')
     print(f'Parsing images to {args.output}')
     parse_images(args.key, args.word, int(args.num), args.output)
