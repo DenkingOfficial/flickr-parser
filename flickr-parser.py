@@ -30,8 +30,8 @@ def parse_images(key, word, num, output):
             counter += 1
             pbar.update(1)
         except:
-            print(f'Image {url} cannot be downloaded')
-        if counter > num:
+            pass
+        if counter > num - 1:
             pbar.close()
             break
     print(f'{counter} Images downloaded to {output}')
